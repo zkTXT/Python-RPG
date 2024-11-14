@@ -1,4 +1,4 @@
-# Monster class
+# Classe monstre
 class Monster:
     def __init__(self, name, level):
         self.name = name
@@ -14,23 +14,23 @@ class Monster:
     def is_alive(self):
         return self.hp > 0
 
-# Goblin subclass
+# Sous-classe Gobelin
 class Goblin(Monster):
     def __init__(self, level):
         super().__init__("Goblin", level)
         self.hp += 10
         self.attack += 1
 
-# Troll subclass
+# Sous-classe Troll
 class Troll(Monster):
     def __init__(self, level):
         super().__init__("Troll", level)
         self.hp += 15
         self.defense += 2
 
-# Special boss class
-class Gio(Monster):
+# Sous-classe Boss
+class Zarek(Monster):
     def __init__(self, level):
-        super().__init__("Gio", level)
+        super().__init__("Zarek", level)
         self.hp += 20
         self.defense += 3

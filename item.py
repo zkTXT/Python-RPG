@@ -1,4 +1,4 @@
-# Base Item class
+# Classe des Items
 class Item:
     def __init__(self, name, effect, amount=1):
         self.name = name
@@ -6,9 +6,9 @@ class Item:
         self.amount = amount
 
     def use(self, player):
-        """Apply item effect to player. To be implemented in subclasses."""
         pass
 
+# Sous-classe pour la potion
 class Potion(Item):
     def __init__(self, amount=1):
         super().__init__("Potion", "heal", amount)
@@ -21,6 +21,7 @@ class Potion(Item):
         else:
             print("No potions left!")
 
+# Sous-classe pour les boost d'attaque
 class BoostATT(Item):
     def __init__(self, amount=1):
         super().__init__("Boost ATT", "increase attack", amount)
@@ -33,6 +34,7 @@ class BoostATT(Item):
         else:
             print("No attack boosts left!")
 
+# Sous-classe pour les boost de defense
 class BoostDEF(Item):
     def __init__(self, amount=1):
         super().__init__("Boost DEF", "increase defense", amount)

@@ -1,5 +1,6 @@
 from item import Potion, BoostATT, BoostDEF
 
+# Classe pour le joueur
 class Player:
     def __init__(self, name):
         self.name = name
@@ -17,6 +18,7 @@ class Player:
             "Boost DEF": BoostDEF(1)
         }
     
+    # Fonction pour les stats apres une montée de niveau
     def level_up(self):
         if self.xp >= 100:
             self.level += 1
@@ -26,11 +28,11 @@ class Player:
             self.attack = self.base_attack
             self.defense = self.base_defense
             self.xp = 0
-            print(f"{self.name} levels up to {self.level}!")
+            print(f"\033[34m{self.name}\033[0m levels up to {self.level}!")
 
     def take_damage(self, damage):
         self.hp -= max(0, damage - self.defense)
-        print(f"{self.name} takes {max(0, damage - self.defense)} damage. HP left: {self.hp}")
+        print(f"\033[34m{self.name}\033[0m takes \033[31m{max(0, damage - self.defense)}\033[0m damage. HP left: \033[32m{self.hp}\033[0m")
 
     def use_item(self, item_name):
         item = self.inventory.get(item_name)
@@ -39,6 +41,7 @@ class Player:
         else:
             print(f"No {item_name} available!")
 
+    # Fonction pour que les item de buff annulent leur effet apres un combat
     def reset_buffs(self):
         self.attack = self.base_attack
         self.defense = self.base_defense

@@ -1,102 +1,39 @@
+from map import game_map, symbol_map, draw_map, move_player
+from utils import clear_screen
 from player import Player
 from item import Item, Potion, BoostATT, BoostDEF
-from monster import Monster, Goblin, Troll, Gio
+from monster import Monster, Goblin, Troll, Zarek
+from story import display_ascii_art, old_man_speech, narrator_intro
+from combat import combat, game_over_screen
 import random
+import time
 import os
 
-# Function to clear the screen
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-# Game map
-game_map = {
-    (0, 0): "Starting Point",
-    (1, 0): "A bright clearing",
-    (0, 1): "A calm lake",
-    (-1, 0): "A dark cave",
-    (0, -1): "A mysterious ruin",
-    (2, 0): "The boss's lair"
-}
-
-# Player movement
-def move_player(player_pos, direction):
-    if direction == "z":  # Up
-        player_pos[1] += 1
-    elif direction == "s":  # Down
-        player_pos[1] -= 1
-    elif direction == "d":  # Right
-        player_pos[0] += 1
-    elif direction == "q":  # Left
-        player_pos[0] -= 1
-    return player_pos
-
-# Combat function
-def combat(player, monster):
-    print(f"A {monster.name} of level {monster.level} appears!")
-    
-    while player.hp > 0 and monster.hp > 0:
-        print("\n====== Combat ======")
-        print(f"{player.name}: {player.hp}/{player.max_hp} HP | {monster.name}: {monster.hp} HP")
-        
-        action = input(" // 1- Attack // 2- Potion // 3- Boost ATT // 4- Boost DEF // 5- Run // ").lower()
-        
-        if action == "1":
-            damage = random.randint(player.attack - 2, player.attack + 2)
-            monster.take_damage(damage)
-            if not monster.is_alive():
-                print(f"{monster.name} is defeated! You gain XP.")
-                player.xp += monster.level * 20
-                player.level_up()
-                input("Press Enter to continue...")
-                break
-        elif action == "2":
-            player.use_item("Potion")
-            input("Press Enter to continue...")
-        elif action == "3":
-            player.use_item("Boost ATT")
-            input("Press Enter to continue...")
-        elif action == "4":
-            player.use_item("Boost DEF")
-            input("Press Enter to continue...")
-        elif action == "5":
-            print("You run away from the fight!")
-            input("Press Enter to continue...")
-            break
-        
-        if monster.is_alive():
-            damage = random.randint(monster.attack - 2, monster.attack + 2)
-            player.take_damage(damage)
-            if player.hp <= 0:
-                print("You have died...")
-                return False
-
-        input("Press Enter to continue...")
-        clear_screen()
-
-    print(f"End of combat! {player.name} is at level {player.level} with {player.xp}/100 XP.")
-    input("Press Enter to continue...")
-    player.reset_buffs()
-    return True
-
-# Game over screen
+# Fonction de game over
 def game_over_screen():
     print("\n===== Game Over =====")
     print("Thanks for playing!")
     return False
 
-# Main game function
+# Fonction principale du jeu
 def play_game():
     player_name = input("Enter your name: ")
     player = Player(player_name)
     player_pos = [0, 0]
     
+    # Introduction du narrateur
+    narrator_intro()
+    
+    # Discours du vieil homme
+    old_man_speech()
+
     while True:
-        clear_screen()
+        draw_map(player_pos)
         print(f"\nYou are at: {game_map.get(tuple(player_pos), 'An unknown place')}")
 
-        if tuple(player_pos) == (2, 0):
+        if tuple(player_pos) == (5, 2):
             print("You enter the boss's lair!")
-            boss = Gio(2)
+            boss = Zarek(2)
             if not combat(player, boss):
                 game_over_screen()
                 return False
@@ -126,8 +63,10 @@ def play_game():
             print("Nothing happens here...")
             input("Press Enter to continue..."); clear_screen()
 
-# Main game loop
+# Boucle principale du jeu
 while True:
+    clear_screen()
+    display_ascii_art()
     choice = input("1. New Game\n2. Quit\nYour choice: ")
     if choice == "1":
         if not play_game():
