@@ -1,5 +1,5 @@
 from player import Player
-from monster import Monster, Goblin, Troll, Zarek
+from monster import Monster, Goblin, Troll, Zarek, Golem, Sorcière
 import random
 from utils import clear_screen
 
@@ -15,9 +15,9 @@ def combat(player, monster):
         print(f"\033[34m{player.name}\033[0m: {player.hp}/{player.max_hp} HP | \033[31m{monster.name}\033[0m: {monster.hp} HP")
         
         if is_boss_fight:
-            action = input(" // 1- Attack // 2- Potion // 3- Boost ATT // 4- Boost DEF // ").lower()
+            action = input(" // 1- Attack // 2- Potion // 3- Boost ATT // 4- Boost DEF // 5- Cape inv ").lower()
         else:
-            action = input(" // 1- Attack // 2- Potion // 3- Boost ATT // 4- Boost DEF // 5- Run // ").lower()
+            action = input(" // 1- Attack // 2- Potion // 3- Boost ATT // 4- Boost DEF // 5- Cape inv // 6- Run ").lower()
 
         if action == "1":
             damage = random.randint(player.attack - 2, player.attack + 2)
@@ -38,7 +38,10 @@ def combat(player, monster):
         elif action == "4":
             player.use_item("Boost DEF")
             input("Press Enter to continue...")
-        elif action == "5" and not is_boss_fight:
+        elif action == "5":
+            player.use_item("Cape d'invisibilité")
+            input("Press Enter to continue...")
+        elif action == "6" and not is_boss_fight:
             print("You run away from the fight!")
             input("Press Enter to continue...")
             clear_screen()
@@ -52,6 +55,10 @@ def combat(player, monster):
         if monster.is_alive():
             damage = random.randint(monster.attack - 2, monster.attack + 2)
             player.take_damage(damage)
+            
+            if player.invisibility_turns > 0:
+                player.invisibility_turns -= 1
+
             if player.hp <= 0:
                 print("You have died...")
                 return False

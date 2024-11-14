@@ -12,7 +12,7 @@ def draw_map(player_pos):
         row = ""
         for x in range(player_pos[0] - half_grid, player_pos[0] + half_grid + 1):
             if (x, y) == tuple(player_pos):
-                row += f"\033[34m P \033[0m"
+                row += f"🦸‍♂️"
             elif (x, y) in game_map:
                 row += f" {symbol_map[game_map[(x, y)]]} "
             else:

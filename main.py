@@ -1,8 +1,8 @@
 from map import game_map, symbol_map, draw_map, move_player
 from utils import clear_screen
 from player import Player
-from item import Item, Potion, BoostATT, BoostDEF
-from monster import Monster, Goblin, Troll, Zarek
+from item import Item, Potion, BoostATT, BoostDEF, CapeInvisibilite
+from monster import Monster, Goblin, Troll, Zarek, Loup, Sorcière, Golem
 from story import display_ascii_art, old_man_speech, narrator_intro
 from combat import combat, game_over_screen
 import random
@@ -49,13 +49,13 @@ def play_game():
         
         event = random.choice(["monster", "item", "nothing"])
         if event == "monster":
-            monster_type = random.choice([Goblin, Troll])
+            monster_type = random.choice([Goblin, Troll, Loup, Sorcière, Golem])
             monster = monster_type(random.randint(1, player.level))
             if not combat(player, monster):
                 game_over_screen()
                 return False
         elif event == "item":
-            item = random.choice(["Potion", "Boost ATT", "Boost DEF"])
+            item = random.choice(["Potion", "Boost ATT", "Boost DEF", "Cape d'invisibilité"])
             print(f"You find an item: {item}")
             player.inventory[item].amount += 1
             input("Press Enter to continue..."); clear_screen()

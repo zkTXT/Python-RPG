@@ -46,3 +46,18 @@ class BoostDEF(Item):
             print(f"{player.name} uses a Defense Boost! Current defense: {player.defense}")
         else:
             print("No defense boosts left!")
+
+# Sous-classe pour la cape d'invisibilité
+class CapeInvisibilite(Item):
+    def __init__(self, amount=1):
+        super().__init__("Cape d'invisibilité", "evade", amount)
+        self.turns_left = 0
+
+    def use(self, player):
+        if self.amount > 0:
+            self.turns_left = 3
+            self.amount -= 1
+            print(f"{player.name} uses the Cape d'invisibilité! They will evade attacks for the next 3 turns.")
+        else:
+            print("No Cape d'invisibilité left!")
+
